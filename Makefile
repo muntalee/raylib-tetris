@@ -1,5 +1,5 @@
 BUILD_DIR = build
-EXE = game
+EXE = tetris
 
 # detect OS
 ifeq ($(OS),Windows_NT)

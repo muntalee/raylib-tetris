@@ -1,6 +1,6 @@
 # Simple C/C++ Project Setup
 
-This is a minimal cross-platform C++ project that currently uses **GLFW** and **OpenGL**, built with **CMake**.
+This is a minimal cross-platform C++ project that uses **raylib**, built with **CMake**.
 
 A `Makefile` is included to make building and running the project consistent across Linux, macOS, and Windows.
 
@@ -40,7 +40,7 @@ git clone --recurse-submodules https://github.com/muntalee/sample-c-cpp-project
   brew install cmake ninja
   ```
 
-  (OpenGL and Clang come with macOS.)
+  (raylib and Clang are built from the submodule; everything else ships with macOS.)
 
 * **Windows**
 
@@ -77,11 +77,11 @@ make clean     # cleans up build files / executable
 
 ## Customization
 
-* By default, the project builds an executable named `game`.
+* By default, the project builds an executable named `tetris`.
 * To change this:
 
-  1. Update the variable `EXE = game` in the `Makefile`.
-  2. Change `game` in the `project(game VERSION 1.0)` line in `CMakeLists.txt`.
+  1. Update the variable `EXE = tetris` in the `Makefile`.
+  2. Change `tetris` in the `project(tetris VERSION 1.0)` line in `CMakeLists.txt`.
 
 ## Adding more libraries
 
