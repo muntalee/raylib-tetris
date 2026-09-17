@@ -1,18 +1,12 @@
-#include "raylib.h"
+#include <raylib.h>
 
-int main(void)
-{
-    InitWindow(640, 480, "Tetris");
+int main() {
+    InitWindow(300, 600, "raylib - tetris");
     SetTargetFPS(60);
 
-    while (!WindowShouldClose())
-    {
+    while (!WindowShouldClose()) {
         BeginDrawing();
-
-        ClearBackground(RAYWHITE);
-
-        DrawText("Hello Tetris!", 190, 200, 20, LIGHTGRAY);
-
+        ClearBackground(DARKGRAY);
         EndDrawing();
     }
 
