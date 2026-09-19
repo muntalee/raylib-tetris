@@ -35,23 +35,37 @@ int main() {
         ClearBackground(DARKBLUE);
         DrawRectangle(10, 10, 300, 600, DARKGRAY);
 
-        DrawTextEx(font, "Score", {360, 25}, 32, 2, WHITE);
-        DrawRectangle(320, 70, 170, 65, darkGrey);
+        DrawTextEx(font, "Score", {360, 15}, 32, 2, WHITE);
+        DrawRectangle(320, 60, 170, 65, darkGrey);
 
         char scoreText[10];
         sprintf(scoreText, "%d", game.score);
         Vector2 textSize = MeasureTextEx(font, scoreText, 32, 2);
-        DrawTextEx(font, scoreText, {320 + (170 - textSize.x) / 2, 85}, 32, 2,
+        DrawTextEx(font, scoreText, {320 + (170 - textSize.x) / 2, 75}, 32, 2,
                    WHITE);
 
-        DrawTextEx(font, "Next", {370, 185}, 32, 2, WHITE);
-        DrawRectangle(320, 230, 170, 170, darkGrey);
+        DrawTextEx(font, "Next", {370, 135}, 32, 2, WHITE);
+        DrawRectangle(320, 180, 170, 170, darkGrey);
 
-        if (game.gameOver) {
-            DrawTextEx(font, "GAME\nOVER", {370, 455}, 32, 2, WHITE);
-        }
+        DrawTextEx(font, "Hold", {370, 360}, 32, 2, WHITE);
+        DrawRectangle(320, 405, 170, 170, darkGrey);
 
         game.Draw();
+
+        if (game.gameOver) {
+            const char *gameOverText = "GAME OVER";
+            Vector2 textSize = MeasureTextEx(font, gameOverText, 32, 2);
+            int boxWidth = textSize.x + 40;
+            int boxHeight = textSize.y + 40;
+            int boxX = 10 + (300 - boxWidth) / 2;
+            int boxY = 10 + (600 - boxHeight) / 2;
+            DrawRectangle(boxX, boxY, boxWidth, boxHeight, darkGrey);
+            DrawRectangle(boxX + 1, boxY + 1, boxWidth - 2, boxHeight - 2, RED);
+            DrawTextEx(
+                font, gameOverText,
+                {10 + (300 - textSize.x) / 2, 10 + (600 - textSize.y) / 2}, 32,
+                2, WHITE);
+        }
 
         EndDrawing();
     }

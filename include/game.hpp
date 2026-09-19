@@ -14,10 +14,12 @@ class Game {
 
   private:
     Block GetRandomBlock();
+    Block GetBlockById(int id);
     std::vector<Block> GetAllBlocks();
     void MoveBlockLeft();
     void MoveBlockRight();
     void HardDropBlock();
+    void HoldBlock();
     Grid grid;
     bool IsBlockOutside();
     void RotateBlock();
@@ -28,4 +30,7 @@ class Game {
     std::vector<Block> blocks;
     Block currentBlock;
     Block nextBlock;
+    Block holdBlock;
+    bool hasHeldBlock;
+    bool canHold;
 };

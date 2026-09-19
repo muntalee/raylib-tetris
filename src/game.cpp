@@ -9,6 +9,8 @@ Game::Game() {
     nextBlock = GetRandomBlock();
     gameOver = false;
     score = 0;
+    hasHeldBlock = false;
+    canHold = true;
 }
 
 Block Game::GetRandomBlock() {
@@ -26,18 +28,51 @@ std::vector<Block> Game::GetAllBlocks() {
             SBlock(), TBlock(), ZBlock()};
 }
 
+Block Game::GetBlockById(int id) {
+    switch (id) {
+    case 1:
+        return SBlock();
+    case 2:
+        return ZBlock();
+    case 3:
+        return LBlock();
+    case 4:
+        return OBlock();
+    case 5:
+        return TBlock();
+    case 6:
+        return IBlock();
+    case 7:
+        return JBlock();
+    default:
+        return LBlock();
+    }
+}
+
 void Game::Draw() {
     grid.Draw();
     currentBlock.Draw(11, 11);
     switch (nextBlock.id) {
     case 6:
-        nextBlock.Draw(255, 300);
+        nextBlock.Draw(255, 250);
         break;
     case 4:
-        nextBlock.Draw(255, 290);
+        nextBlock.Draw(255, 240);
         break;
     default:
-        nextBlock.Draw(270, 280);
+        nextBlock.Draw(270, 230);
+    }
+    if (hasHeldBlock) {
+        switch (holdBlock.id) {
+        case 6:
+            holdBlock.Draw(255, 475);
+            break;
+        case 4:
+            holdBlock.Draw(255, 465);
+            break;
+        default:
+            holdBlock.Draw(270, 455);
+        }
     }
 }
 
@@ -62,6 +97,9 @@ void Game::HandleInput() {
     case KEY_SPACE:
         HardDropBlock();
         UpdateScore(0, 2);
+        break;
+    case KEY_C:
+        HoldBlock();
         break;
     case KEY_UP:
         RotateBlock();
@@ -118,6 +156,21 @@ void Game::RotateBlock() {
     }
 }
 
+void Game::HoldBlock() {
+    if (!canHold || gameOver) {
+        return;
+    }
+    int heldId = currentBlock.id;
+    if (hasHeldBlock) {
+        currentBlock = GetBlockById(holdBlock.id);
+    } else {
+        currentBlock = GetRandomBlock();
+    }
+    holdBlock = GetBlockById(heldId);
+    hasHeldBlock = true;
+    canHold = false;
+}
+
 bool Game::IsBlockOutside() {
     std::vector<Position> tiles = currentBlock.GetCellPositions();
     for (Position tile : tiles) {
@@ -134,6 +187,7 @@ void Game::LockBlock() {
         grid.grid[tile.row][tile.col] = currentBlock.id;
     }
     currentBlock = nextBlock;
+    canHold = true;
     if (BlockFits() == false) {
         gameOver = true;
     }
@@ -158,6 +212,8 @@ void Game::Reset() {
     currentBlock = GetRandomBlock();
     nextBlock = GetRandomBlock();
     score = 0;
+    hasHeldBlock = false;
+    canHold = true;
 }
 
 void Game::UpdateScore(int linesCleared, int moveDownPoints) {
