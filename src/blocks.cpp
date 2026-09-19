@@ -1,5 +1,4 @@
 #include "block.hpp"
-#include "position.hpp"
 
 class IBlock : public Block {
   public:

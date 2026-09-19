@@ -1,11 +1,8 @@
 #include "colors.hpp"
 #include "game.hpp"
-#include "raylib.h"
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
-#include <grid.hpp>
-#include <iostream>
 
 double lastUpdateTime = 0.0;
 bool EventTriggered(double interval) {

@@ -1,8 +1,6 @@
 #include "grid.hpp"
 #include "colors.hpp"
-#include "raylib.h"
 #include <iostream>
-#include <vector>
 
 Grid::Grid() {
     numRows = 20;

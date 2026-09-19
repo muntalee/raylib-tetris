@@ -1,8 +1,6 @@
 #include "game.hpp"
 #include "blocks.cpp"
-#include "raylib.h"
 #include <stdlib.h>
-#include <vector>
 
 Game::Game() {
     grid = Grid();

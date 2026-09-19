@@ -1,6 +1,4 @@
 #include "block.hpp"
-#include "colors.hpp"
-#include "raylib.h"
 
 Block::Block() {
     cellSize = 30;

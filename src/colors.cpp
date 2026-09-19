@@ -1,5 +1,4 @@
 #include "colors.hpp"
-#include <vector>
 
 const Color darkGrey = {26, 31, 40, 255};
 const Color green = {0, 255, 0, 255};
