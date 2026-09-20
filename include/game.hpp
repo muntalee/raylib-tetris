@@ -15,6 +15,7 @@ class Game {
   private:
     Block GetRandomBlock();
     Block GetBlockById(int id);
+    Block GetGhostBlock();
     std::vector<Block> GetAllBlocks();
     void MoveBlockLeft();
     void MoveBlockRight();

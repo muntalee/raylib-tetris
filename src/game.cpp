@@ -51,6 +51,8 @@ Block Game::GetBlockById(int id) {
 
 void Game::Draw() {
     grid.Draw();
+    Block ghostBlock = GetGhostBlock();
+    ghostBlock.DrawGhost(11, 11);
     currentBlock.Draw(11, 11);
     switch (nextBlock.id) {
     case 6:
@@ -74,6 +76,31 @@ void Game::Draw() {
             holdBlock.Draw(270, 455);
         }
     }
+}
+
+Block Game::GetGhostBlock() {
+    Block ghostBlock = currentBlock;
+
+    while (true) {
+        ghostBlock.Move(1, 0);
+        std::vector<Position> tiles = ghostBlock.GetCellPositions();
+        bool blocked = false;
+
+        for (Position tile : tiles) {
+            if (grid.IsCellOutside(tile.row, tile.col) ||
+                !grid.IsCellEmpty(tile.row, tile.col)) {
+                blocked = true;
+                break;
+            }
+        }
+
+        if (blocked) {
+            ghostBlock.Move(-1, 0);
+            break;
+        }
+    }
+
+    return ghostBlock;
 }
 
 void Game::HandleInput() {
