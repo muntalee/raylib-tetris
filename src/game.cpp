@@ -11,6 +11,7 @@ Game::Game() {
     score = 0;
     hasHeldBlock = false;
     canHold = true;
+    lockStartTime = -1.0;
 }
 
 Block Game::GetRandomBlock() {
@@ -141,6 +142,8 @@ void Game::MoveBlockLeft() {
         currentBlock.Move(0, -1);
         if (IsBlockOutside() || !BlockFits()) {
             currentBlock.Move(0, 1);
+        } else {
+            ResetLockTimer();
         }
     }
 }
@@ -150,6 +153,8 @@ void Game::MoveBlockRight() {
         currentBlock.Move(0, 1);
         if (IsBlockOutside() || !BlockFits()) {
             currentBlock.Move(0, -1);
+        } else {
+            ResetLockTimer();
         }
     }
 }
@@ -159,7 +164,14 @@ void Game::MoveBlockDown() {
         currentBlock.Move(1, 0);
         if (IsBlockOutside() || !BlockFits()) {
             currentBlock.Move(-1, 0);
-            LockBlock();
+            double currentTime = GetTime();
+            if (lockStartTime < 0.0) {
+                lockStartTime = currentTime;
+            } else if (currentTime - lockStartTime >= lockDelay) {
+                LockBlock();
+            }
+        } else {
+            lockStartTime = -1.0;
         }
     }
 }
@@ -179,6 +191,8 @@ void Game::RotateBlock() {
         currentBlock.Rotate();
         if (IsBlockOutside() || !BlockFits()) {
             currentBlock.UndoRotation();
+        } else {
+            ResetLockTimer();
         }
     }
 }
@@ -196,6 +210,7 @@ void Game::HoldBlock() {
     holdBlock = GetBlockById(heldId);
     hasHeldBlock = true;
     canHold = false;
+    lockStartTime = -1.0;
 }
 
 bool Game::IsBlockOutside() {
@@ -209,6 +224,7 @@ bool Game::IsBlockOutside() {
 }
 
 void Game::LockBlock() {
+    lockStartTime = -1.0;
     std::vector<Position> tiles = currentBlock.GetCellPositions();
     for (Position tile : tiles) {
         grid.grid[tile.row][tile.col] = currentBlock.id;
@@ -233,6 +249,17 @@ bool Game::BlockFits() {
     return true;
 }
 
+bool Game::IsBlockGrounded() {
+    currentBlock.Move(1, 0);
+    bool grounded = IsBlockOutside() || !BlockFits();
+    currentBlock.Move(-1, 0);
+    return grounded;
+}
+
+void Game::ResetLockTimer() {
+    lockStartTime = IsBlockGrounded() ? GetTime() : -1.0;
+}
+
 void Game::Reset() {
     grid.Initialize();
     blocks = GetAllBlocks();
@@ -241,6 +268,7 @@ void Game::Reset() {
     score = 0;
     hasHeldBlock = false;
     canHold = true;
+    lockStartTime = -1.0;
 }
 
 void Game::UpdateScore(int linesCleared, int moveDownPoints) {

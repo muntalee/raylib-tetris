@@ -26,6 +26,8 @@ class Game {
     void RotateBlock();
     void LockBlock();
     bool BlockFits();
+    bool IsBlockGrounded();
+    void ResetLockTimer();
     void Reset();
     void UpdateScore(int linesCleared, int moveDownPoints);
     std::vector<Block> blocks;
@@ -34,4 +36,6 @@ class Game {
     Block holdBlock;
     bool hasHeldBlock;
     bool canHold;
+    double lockStartTime;
+    static constexpr double lockDelay = 0.5;
 };
