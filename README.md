@@ -1,125 +1,97 @@
-# Simple C/C++ Project Setup
+# Raylib Tetris
 
-This is a minimal cross-platform C++ project that uses **raylib**, built with **CMake**.
+A small Tetris-style game written in C++ with [raylib](https://www.raylib.com/).
 
-A `Makefile` is included to make building and running the project consistent across Linux, macOS, and Windows.
+![Tetris gameplay](showcase.gif)
 
-## Dependencies
+## Features
 
-* **CMake ≥ 3.16**
-* **A C++17 (or newer) compiler**
-  * GCC or Clang on Linux
-  * Clang (via Xcode tools) on macOS
-  * MSVC (Visual Studio) or MinGW on Windows
-* **Ninja** (build tool)
+- Seven standard tetrominoes with rotation
+- Next-piece and hold-piece previews
+- Ghost piece showing where the current piece will land
+- Soft drop and hard drop
+- Line clearing and score tracking
+- Game-over screen with restart
+- Minecraft font and a simple dark-blue/gray interface
 
-## Download
+## Controls
 
-```
-git clone --recurse-submodules https://github.com/muntalee/sample-c-cpp-project
-```
+| Key | Action |
+| --- | --- |
+| Left / Right arrows | Move the piece |
+| Up arrow | Rotate |
+| Down arrow | Soft drop |
+| Space | Hard drop |
+| C | Hold or swap the current piece |
+| Any key after game over | Restart |
 
-## Install
+## Setup
 
-* **Ubuntu / Debian**
+### Requirements
 
-  ```bash
-  sudo apt update
-  sudo apt install build-essential cmake ninja-build libgl1-mesa-dev xorg-dev
-  ```
+- A C++17 compiler
+- [CMake](https://cmake.org/) 3.16 or newer
+- [Ninja](https://ninja-build.org/)
+- A system with raylib's desktop dependencies
 
-* **Fedora**
-
-  ```bash
-  sudo dnf install gcc-c++ cmake ninja-build mesa-libGL-devel libX11-devel libXrandr-devel libXcursor-devel libXi-devel
-  ```
-
-* **macOS**
-
-  ```bash
-  brew install cmake ninja
-  ```
-
-  (raylib and Clang are built from the submodule; everything else ships with macOS.)
-
-* **Windows**
-
-  * **Option 1: Visual Studio (MSVC toolchain)**
-
-    * Install [Visual Studio Community](https://visualstudio.microsoft.com/)
-      (Choose **Desktop development with C++** workload.)
-    * Install [Ninja](https://ninja-build.org/) or with Winget:
-
-      ```powershell
-      winget install Ninja-build.Ninja
-      ```
-
-  * **Option 2: Scoop + MinGW (GCC toolchain)**
-
-    * Install [Scoop](https://scoop.sh/) (a Windows package manager).
-    * Then all other dependencies
-
-      ```powershell
-      scoop install mingw
-      scoop install ninja cmake
-      ```
-
-## Build & Run
-
-The `Makefile` comes bundled with preset commands you may use to compile your project.
+On Ubuntu or Debian:
 
 ```bash
-make build     # creates build
-make compile   # compiles the build
-make run       # build and run
-make clean     # cleans up build files / executable
+sudo apt update
+sudo apt install build-essential cmake ninja-build libgl1-mesa-dev xorg-dev
 ```
 
-## Customization
-
-* By default, the project builds an executable named `tetris`.
-* To change this:
-
-  1. Update the variable `EXE = tetris` in the `Makefile`.
-  2. Change `tetris` in the `project(tetris VERSION 1.0)` line in `CMakeLists.txt`.
-
-## Adding more libraries
-
-### Option 1: Drop-in
-
-* Place the library source under `extern/`
-* In `CMakeLists.txt`:
-
-  ```cmake
-  add_subdirectory(extern/mylib)
-  target_link_libraries(${OUT} PRIVATE mylib)
-  target_include_directories(${OUT} PRIVATE extern/mylib/include)
-  ```
-
-### Option 2: Git Submodules
-
-If the library is hosted on GitHub or elsewhere, you can add it as a `submodule`:
+On macOS, install CMake and Ninja with [Homebrew](https://brew.sh/):
 
 ```bash
-git submodule add https://github.com/some/library.git extern/library
-git submodule update --init --recursive
+brew install cmake ninja
 ```
 
-Then link it in `CMakeLists.txt`:
+On Windows, install Visual Studio with the **Desktop development with C++** workload, plus CMake and Ninja.
 
-```cmake
-add_subdirectory(extern/library)
-target_link_libraries(${OUT} PRIVATE library)
-```
+## Build and run
 
-When cloning this repo later, don’t forget to pull submodules too:
+Clone the repository and its raylib submodule:
 
 ```bash
-git clone --recurse-submodules https://github.com/your/repo.git
+git clone --recurse-submodules https://github.com/muntalee/raylib-tetris.git
+cd raylib-tetris
 ```
 
-Or if you forgot:
+Then build and start the game:
+
+```bash
+make run
+```
+
+The executable is created at `build/tetris` on Linux and macOS, or `build/tetris.exe` on Windows.
+
+To build without running:
+
+```bash
+make compile
+```
+
+To remove generated build files:
+
+```bash
+make clean
+```
+
+If the repository was cloned without submodules, initialize raylib with:
 
 ```bash
 git submodule update --init --recursive
 ```
+
+## Project layout
+
+- `src/` - game and rendering code
+- `include/` - project headers
+- `data/` - fonts and other game assets
+- `extern/raylib/` - raylib dependency
+- `CMakeLists.txt` and `Makefile` - build configuration
+
+## License
+
+This project is available under the terms of the [LICENSE](LICENSE) file.
